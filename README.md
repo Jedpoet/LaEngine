@@ -1,3 +1,5 @@
+[中文版本](./README_zh.md)
+
 # LaEngine
 
 LaEngine is a game engine designed for creating text-based adventure games (AVG) powered by Large Language Models (LLMs).
