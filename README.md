@@ -1,6 +1,6 @@
-[中文版本](./README_zh.md)
-
 # LaEngine
+
+[中文版本](./README_zh.md)
 
 LaEngine is a game engine designed for creating text-based adventure games (AVG) powered by Large Language Models (LLMs).
 
@@ -65,3 +65,22 @@ status = ["mood", "health"]
 - [ ] Support exporting game settings to TOML files.
 - [ ] Create a platform for sharing and downloading TOML scripts.
 - [ ] Provide functionality to package the game into a standalone executable.
+
+## Step 1 Breakdown: Parsing the TOML Script
+
+The goal of this step is to transform the `.toml` script file into data structures that the program can easily access and manipulate.
+
+1.  **Install a TOML library:** For Python 3.11+, the built-in `tomllib` can be used. For older versions, a third-party library like `tomli` is needed. This dependency should be added to `pyproject.toml`.
+
+2.  **Define Data Structures:** Use Python's `dataclasses` or regular classes to define the core game objects. This makes the code cleaner and less error-prone. Based on the TOML format, we'll need:
+    *   `WorldSetting`: To store the world description, nouns, etc.
+    *   `UserSetting`: To store the player's name, description, and initial status.
+    *   `StoryNode`: To store node descriptions, next nodes, conditions, etc.
+    *   `Character`: To store NPC names, descriptions, and statuses.
+    *   `GameData`: A top-level container to hold all the above objects.
+
+3.  **Implement Loading and Parsing:** Create a function like `load_game_from_toml(file_path)` that reads the TOML file and uses the chosen library to parse it into a Python dictionary.
+
+4.  **Map Dictionary to Data Structures:** Create a converter function that takes the dictionary from the previous step and populates the data classes defined in step 2. This is also the stage to perform data validation to ensure all required fields are present and correctly formatted.
+
+5.  **Integrate and Test:** In `main.py`, call the `load_game_from_toml()` function with a sample TOML file. Print the contents of the resulting `GameData` object to verify that all data has been loaded correctly.
