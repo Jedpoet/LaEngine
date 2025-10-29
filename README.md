@@ -14,46 +14,99 @@ The core elements of the game—such as plot, world-building, and characters—a
 
 ```toml
 # Game Title
-title = "Game Name"
+title = "Secret Garden"
 
-# World Setting
+#------------------------------------------------------------------------------
+#  Global Settings
+#------------------------------------------------------------------------------
+
 [world_setting]
 # A macro description of this world
-descript = ""
+descript = "A world where modernity and fantasy intertwine."
 # Proper nouns in the game to help the LLM generate more accurate content
-nouns = ""
+nouns = "Magic, Runes, Adventurer's Guild"
 
-# Player Character Setting
+[variables]
+# Global variables for tracking key events or states
+has_met_king = false
+power_is_on = false
+
+#------------------------------------------------------------------------------
+#  Player Settings
+#------------------------------------------------------------------------------
+
 [user_setting]
-# Player's name
-name = ""
-# Player's backstory or description
-descript = ""
-# Player's status values
-status = ["health", "money", "atk"]
+name = "Alan"
+descript = "A young person full of curiosity about the world."
+# Player's status values, 'value' is the initial value
+status = [
+  { name = "health", value = 100, max = 100, min = 0 },
+  { name = "mana",   value = 50,  max = 50,  min = 0 },
+  { name = "money",  value = 10,  max = 9999, min = 0 }
+]
 
-# Story Node: wake_up
-[node.wake_up]
-type = "node"
-# Scene description for this node
-descript = "You wake up from your bed, sunlight streaming through the window."
-# Possible next nodes
-next_node = ["a_node", "b_node"]
-# Conditions to trigger the next node
-next_condition = ["Player walks out the door", "Player chooses to end the game"]
-# Maximum number of interactions in this node
+#------------------------------------------------------------------------------
+#  Story Nodes
+#------------------------------------------------------------------------------
+
+[[nodes]]
+id = "wake_up"
+descript = "You wake up from a soft bed, warm sunlight streaming through the window."
+# Hidden information known only to the LLM, used to enrich responses
+hide_descript = "This is a room on the second floor, with a quiet street outside the window."
+# Scene atmosphere hints for the LLM
+atmosphere = "Cozy, Calm, Safe"
+
+# Objects in this scene
+objects = [
+  { name = "Desk", detail = "A wooden desk with a few books on it.", location = "In the corner of the room" },
+  { name = "Notebook", detail = "An old-looking leather-bound notebook.", location = "In the desk drawer", properties = { takable = true } }
+]
+
+# Conditions for node transition
+next = [
+  { condition = { event = "action", detail = "walk out the door" }, goto = "kitchen" },
+  { condition = { event = "action", detail = "jump out the window" }, goto = "dead_end_fall" }
+]
+
+# Special event triggers within the node
+triggers = {}
+
 max_turn = 10
-# Event triggered when max_turn is reached
-when_max_turn = "Mom urges the player"
+when_max_turn = "Mom's voice comes from downstairs: 'Alan, hurry down for breakfast!'"
 
-# NPC: Mom
-[chara.mom]
-type = "chara"
+[[nodes]]
+id = "kitchen"
+descript = "You arrive in the kitchen. Mom is preparing breakfast, and the air is filled with the aroma of bread."
+atmosphere = "Warm, Lively"
+
+objects = [
+  { name = "Fruit Knife", detail = "A sharp fruit knife.", location = "On the counter", properties = { takable = true, use_on = ["Apple"] } },
+  { name = "Apple", detail = "A bright red apple.", location = "In the fruit basket on the table", properties = { takable = true } }
+]
+
+next = [
+  { condition = { event = "talk", detail = "talk to Mom" }, goto = "breakfast_dialogue" }
+]
+
+triggers = { on_enter = "Mom smiles and greets you: 'Dear, you're awake!'" }
+
+
+#------------------------------------------------------------------------------
+#  Characters
+#------------------------------------------------------------------------------
+
+[[characters]]
+id = "mom"
 name = "Mom"
-# Character's background or personality description
-descript = "A kind but somewhat nagging mother."
+descript = "A kind but sometimes nagging mother."
+# A dedicated 'role-playing guide' for the LLM to ensure a consistent character persona
+personality = "Always calls the player 'dear', is concerned about the player's health, and loves to share neighborhood gossip."
+
 # Character's status values
-status = ["mood", "health"]
+status = [
+  { name = "mood", value = 80, max = 100, min = -100 }
+]
 ```
 
 ## Roadmap
