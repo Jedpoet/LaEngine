@@ -139,7 +139,7 @@ choices = []
 
 ## Roadmap
 
-- [ ] Parse TOML files to establish the world, story nodes, and character settings.
+- [x] Parse TOML files to establish the world, story nodes, and character settings. (Data structures defined with type hints in `data_models.py`)
 - [ ] Create a Minimum Viable Product (MVP) that runs in a command-line interface (CLI).
 - [ ] Optimize the dialogue history and memory system.
 - [ ] Develop a Graphical User Interface (GUI) to lower the barrier to entry.
@@ -153,7 +153,7 @@ The goal of this step is to transform the `.toml` script file into data structur
 
 1.  **Install a TOML library:** For Python 3.11+, the built-in `tomllib` can be used. For older versions, a third-party library like `tomli` is needed. This dependency should be added to `pyproject.toml`.
 
-2.  **Define Data Structures:** Use Python's `dataclasses` or regular classes to define the core game objects. This makes the code cleaner and less error-prone. Based on the TOML format, we'll need:
+2.  **Define Data Structures:** (Completed in `data_models.py`) Use Python's `dataclasses` to define the core game objects with type hints. This makes the code cleaner and less error-prone. Based on the TOML format, we'll need:
     *   `WorldSetting`: To store the world description, nouns, etc.
     *   `UserSetting`: To store the player's name, description, and initial status.
     *   `StoryNode`: To store node descriptions, next nodes, conditions, etc.
