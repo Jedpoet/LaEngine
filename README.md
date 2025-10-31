@@ -147,6 +147,40 @@ choices = []
 - [ ] Create a platform for sharing and downloading TOML scripts.
 - [ ] Provide functionality to package the game into a standalone executable.
 
+## Installation and Usage
+
+This project uses `uv` to manage the virtual environment and dependencies. `uv` reads the `pyproject.toml` file to ensure a consistent development environment.
+
+### 1. Environment Setup
+
+If you haven't installed `uv` yet, please refer to the [official `uv` documentation](https://github.com/astral-sh/uv) for installation instructions.
+
+To set up the project for the first time, run the following commands to create a virtual environment and install the dependencies defined in `pyproject.toml`:
+
+```bash
+# Create the virtual environment (.venv)
+uv venv
+
+# Sync dependencies
+uv pip sync
+```
+
+### 2. Running the Game Engine
+
+It is recommended to use the `uv run` command to execute the main program. This command automatically uses the Python interpreter from the virtual environment and ensures all dependencies are installed:
+
+```bash
+uv run python src/laengine/main.py
+```
+
+### 3. Managing Dependencies
+
+To add a new package to the project, use the `uv pip add` command. `uv` will automatically install the package into the virtual environment and update the `pyproject.toml` and `uv.lock` files.
+
+```bash
+uv add <package_name>
+```
+
 ## Step 1 Breakdown: Parsing the TOML Script
 
 The goal of this step is to transform the `.toml` script file into data structures that the program can easily access and manipulate.

@@ -147,11 +147,45 @@ choices = []
 - [ ] 建立一個分享與下載 TOML 劇本的平台
 - [ ] 提供將遊戲打包成獨立執行檔的功能
 
+## 安裝與使用
+
+本專案使用 `uv` 來管理虛擬環境與依賴項。`uv` 會讀取 `pyproject.toml` 檔案來確保開發環境的一致性。
+
+### 1. 環境設定
+
+如果您尚未安裝 `uv`，請參考 [uv 官方文件](https://github.com/astral-sh/uv) 進行安裝。
+
+首次設定專案時，請執行以下指令來建立虛擬環境並安裝 `pyproject.toml` 中定義的所有依賴項：
+
+```bash
+# 建立虛擬環境 (.venv)
+uv venv
+
+# 同步依賴項
+uv pip sync
+```
+
+### 2. 執行遊戲引擎
+
+推薦使用 `uv run` 指令來執行主程式。這個指令會自動使用虛擬環境中的 Python，並確保所有依賴項都已安裝：
+
+```bash
+uv run python src/laengine/main.py
+```
+
+### 3. 管理依賴項
+
+若要為專案加入新的套件，請使用 `uv pip add` 指令。`uv` 會自動將套件安裝到虛擬環境，並更新 `pyproject.toml` 和 `uv.lock` 檔案。
+
+```bash
+uv add <package_name>
+```
+
 ## 第一步拆解：解析 TOML 劇本
 
 此步驟的目標是將 `.toml` 劇本檔案的內容，轉換成程式內部可以輕易取用和操作的資料結構。
 
-1.  **安裝 TOML 解析函式庫：** Python 3.11 以上版本內建了 `tomllib`。若為舊版，則需安裝如 `tomli` 的第三方函式庫，並將其加入 `pyproject.toml`。
+1.  **安裝 TOML 解析函式庫：** Python 3.11 以上版本內建了 `tomllib`。若為舊版，則需安裝如 `tomli` 的第三方函式庫，並將其加入 `pyproject.toml`。（已使用python 3.14）
 
 2.  **定義資料結構：** (已在 `data_models.py` 中完成) 使用 Python 的 `dataclasses` 來定義核心遊戲物件並加入型別提示。這將使程式碼更清晰且不易出錯。根據 TOML 格式，我們需要：
     *   `WorldSetting`: 存放世界觀描述、專有名詞。
