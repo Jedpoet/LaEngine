@@ -12,6 +12,15 @@ LaEngine features a hybrid design that separates game structure into **Scenes** 
 
 The core elements of the game—such as plot, world-building, and characters—are defined in a simple, human-readable TOML file.
 
+## Project Structure
+
+- `pyproject.toml`: Manages project metadata and dependencies. Use `uv` for installation and management.
+- `src/laengine/main.py`: The main entry point of the application.
+- `src/laengine/data_models.py`: Defines the game data structures (dataclasses).
+- `src/laengine/toml_loader.py`: Responsible for reading and parsing TOML game script files.
+- `examples/*.toml`: Game script files used to define the world, characters, and story nodes.
+- `README.md` / `README_zh.md`: Project documentation. Please keep these two files in sync when adding new features.
+
 ```toml
 # Game Title
 title = "Advanced Hybrid Model Example - Time Bomb"
@@ -154,16 +163,6 @@ This project uses `uv` to manage the virtual environment and dependencies. `uv` 
 ### 1. Environment Setup
 
 If you haven't installed `uv` yet, please refer to the [official `uv` documentation](https://github.com/astral-sh/uv) for installation instructions.
-
-To set up the project for the first time, run the following commands to create a virtual environment and install the dependencies defined in `pyproject.toml`:
-
-```bash
-# Create the virtual environment (.venv)
-uv venv
-
-# Sync dependencies
-uv pip sync
-```
 
 ### 2. Running the Game Engine
 

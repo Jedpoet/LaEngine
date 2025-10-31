@@ -12,6 +12,15 @@ LaEngine 的核心為一個混合式架構，它將遊戲結構清晰地劃分�
 
 遊戲的劇情、世界觀與角色等核心元素，都將透過簡單易讀的 TOML 檔案進行定義。
 
+## 專案結構
+
+- `pyproject.toml`: 管理專案的元數據和依賴項。請使用 `uv` 來安裝與管理。
+- `src/laengine/main.py`: 應用程式的主要進入點。
+- `src/laengine/data_models.py`: 定義遊戲資料結構 (dataclasses)。
+- `src/laengine/toml_loader.py`: 負責讀取和解析 TOML 遊戲劇本檔案。
+- `examples/*.toml`: 遊戲劇本檔案，用於定義世界觀、角色和劇情節點。
+- `README.md` / `README_zh.md`: 專案說明文件。當新增功能時，請保持這兩個檔案的同步更新。
+
 ```toml
 # 遊戲標題
 title = "高級混合模型範例 - 限時拆彈"
@@ -154,16 +163,6 @@ choices = []
 ### 1. 環境設定
 
 如果您尚未安裝 `uv`，請參考 [uv 官方文件](https://github.com/astral-sh/uv) 進行安裝。
-
-首次設定專案時，請執行以下指令來建立虛擬環境並安裝 `pyproject.toml` 中定義的所有依賴項：
-
-```bash
-# 建立虛擬環境 (.venv)
-uv venv
-
-# 同步依賴項
-uv pip sync
-```
 
 ### 2. 執行遊戲引擎
 

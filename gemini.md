@@ -9,8 +9,10 @@ LaEngine 是一個使用 Python 開發、基於大型語言模型（LLM）的文
 ## 2. 專案結構
 
 -   `pyproject.toml`: 管理專案的元數據和依賴項。請使用 `uv` 來安裝與管理。
--   `main.py`: 應用程式的主要進入點。
--   `*.toml`: 遊戲劇本檔案，用於定義世界觀、角色和劇情節點。
+-   `src/laengine/main.py`: 應用程式的主要進入點。
+-   `src/laengine/data_models.py`: 定義遊戲資料結構 (dataclasses)。
+-   `src/laengine/toml_loader.py`: 負責讀取和解析 TOML 遊戲劇本檔案。
+-   `examples/*.toml`: 遊戲劇本檔案，用於定義世界觀、角色和劇情節點。
 -   `README.md` / `README_zh.md`: 專案說明文件。當新增功能時，請保持這兩個檔案的同步更新。
 
 ## 3. 開發工作流程
@@ -21,7 +23,6 @@ LaEngine 是一個使用 Python 開發、基於大型語言模型（LLM）的文
 
 詳細步驟請參考 `README.md` 中的「第一步拆解」：
 
-1.  **安裝依賴項：** 如果 Python 版本低於 3.11，需要將 `tomli` 加入 `pyproject.toml`。
 2.  **定義資料結構：** 在一個新檔案中 (例如 `engine/data_models.py`)，為 `WorldSetting`, `UserSetting`, `StoryNode`, `Character`, 和 `GameData` 建立 dataclass。
 3.  **實作讀取器：** 在一個新檔案中 (例如 `engine/toml_loader.py`)，建立 `load_game_from_toml(file_path)` 函式。
 4.  **對應資料：** 實作將解析後的字典對應到 dataclass 的邏輯。
@@ -37,14 +38,14 @@ LaEngine 是一個使用 Python 開發、基於大型語言模型（LLM）的文
 
 ## 5. 如何執行
 
-本專案可直接使用 Python 解譯器執行。
+本專案推薦使用uv執行。
 
 ```bash
 # 安裝/更新依賴項
-uv pip install -r requirements.txt
+uv add <package_name>
 
 # 執行主程式
-python main.py
+uv run src/laengine/main.py
 ```
 
 ## 6. 如何測試
