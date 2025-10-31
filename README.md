@@ -170,12 +170,12 @@ uv pip sync
 It is recommended to use the `uv run` command to execute the main program. This command automatically uses the Python interpreter from the virtual environment and ensures all dependencies are installed:
 
 ```bash
-uv run python src/laengine/main.py
+uv run src/laengine/main.py
 ```
 
 ### 3. Managing Dependencies
 
-To add a new package to the project, use the `uv pip add` command. `uv` will automatically install the package into the virtual environment and update the `pyproject.toml` and `uv.lock` files.
+To add a new package to the project, use the `uv add` command. `uv` will automatically install the package into the virtual environment and update the `pyproject.toml` and `uv.lock` files.
 
 ```bash
 uv add <package_name>

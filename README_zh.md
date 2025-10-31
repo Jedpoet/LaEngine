@@ -170,12 +170,12 @@ uv pip sync
 推薦使用 `uv run` 指令來執行主程式。這個指令會自動使用虛擬環境中的 Python，並確保所有依賴項都已安裝：
 
 ```bash
-uv run python src/laengine/main.py
+uv run src/laengine/main.py
 ```
 
 ### 3. 管理依賴項
 
-若要為專案加入新的套件，請使用 `uv pip add` 指令。`uv` 會自動將套件安裝到虛擬環境，並更新 `pyproject.toml` 和 `uv.lock` 檔案。
+若要為專案加入新的套件，請使用 `uv add` 指令。`uv` 會自動將套件安裝到虛擬環境，並更新 `pyproject.toml` 和 `uv.lock` 檔案。
 
 ```bash
 uv add <package_name>
