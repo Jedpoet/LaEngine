@@ -52,3 +52,13 @@ class StoryNode:
     hide_discript: str  # 給LLM提供的隱藏資訊，玩家一開始不知
     on_enter: dict[str, Any]  # 進入劇情節點時觸發的劇情
     choice: dict[str, Any]  # 觸發這些條件就可以進入下個節點
+
+
+@dataclass
+class GameData:
+    world: WorldSetting
+    var: Variables
+    user: UserSetting
+    charas: list[Character]
+    scenes: list[Scene]
+    nodes: list[StoryNode]
