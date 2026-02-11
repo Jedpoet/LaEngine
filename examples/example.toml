@@ -6,7 +6,8 @@ title = "高級混合模型範例 - 限時拆彈"
 #------------------------------------------------------------------------------
 
 [world_setting]
-descript = "一個充滿未來科技感的世界。"
+description = "一個充滿未來科技感的世界。"
+# nouns = { "科技" = "高精尖技術" } # 範例
 
 [variables]
 # 記錄炸彈是否已被拆除
@@ -17,7 +18,7 @@ bomb_disarmed = false
 #------------------------------------------------------------------------------
 
 [user_setting]
-name = "探員"
+user_name = "探員"
 # 玩家的狀態值
 status = [
   { name = "anxiety", value = 30, max = 100, min = 0 }
@@ -29,7 +30,7 @@ status = [
 [[characters]]
 id = "unit734"
 name = "U-734"
-descript = "房間中央的全息投影 AI 助理。"
+description = "房間中央的全息投影 AI 助理。"
 # 角色的扮演指南
 personality = "以單調、邏輯、機械的語氣說話。只提供數據，不提供情感支持。在情況緊急時，會重複關鍵指令。"
 # 角色也可以有自己的狀態
@@ -44,9 +45,11 @@ status = [
 
 [[scenes]]
 id = "locked_room"
-descript = "一個冰冷的金屬房間，沒有門窗。牆上的一個巨大螢幕顯示著不祥的紅色倒數計時。"
+name = "密封房間"
+description = "一個冰冷的金屬房間，沒有門窗。牆上的一個巨大螢幕顯示著不祥的紅色倒數計時。"
 # 場景的氛圍，可以影響音樂、UI 或 LLM 的語氣
 atmosphere = "緊急, 幽閉, 緊張"
+objs = {} # 補上空的 dictionary 以匹配 dataclass
 
 # 當進入此場景時，玩家只有 5 個回合（行動次數）的時間
 max_turn = 5
@@ -65,35 +68,39 @@ story_triggers = [
 
 [[story_nodes]]
 id = "start_scenario"
-descript = "你的大腦一陣暈眩後恢復了意識。AI U-734 的聲音響起：『探員，歡迎回來。情況分析：偵測到一枚即將引爆的炸彈。建議立即處理。』"
-choices = [
+name = "場景開始"
+description = "你的大腦一陣暈眩後恢復了意識。AI U-734 的聲音響起：『探員，歡迎回來。情況分析：偵測到一枚即將引爆的炸彈。建議立即處理。』"
+choice = [
   { text = "「U-734，報告情況。」", goto = "ai_report" },
   { text = "直接衝向炸彈進行檢查", goto = "inspect_bomb" }
 ]
 
 [[story_nodes]]
 id = "ai_report"
-descript = "『倒數計時結束後，炸彈將引爆。根據掃描，拆除需要剪斷三條引線中的一條。錯誤的選擇將導致立即引爆。』"
+name = "AI 報告"
+description = "『倒數計時結束後，炸彈將引爆。根據掃秘，拆除需要剪斷三條引線中的一條。錯誤的選擇將導致立即引爆。』"
 # 只有 LLM 可見的隱藏描述，用於豐富生成內容
-hide_descript = "AI 的全息投影閃爍了一下，似乎在暗示有什麼資訊沒有直接說出來。"
-choices = [
+hidden_description = "AI 的全息投影閃爍了一下，似乎在暗示有什麼資訊沒有直接說出來。"
+choice = [
   { text = "「哪三條引線？」", goto = "inspect_bomb" },
   { text = "「你有什麼建議？」", goto = "ai_suggestion" }
 ]
 
 [[story_nodes]]
 id = "ai_suggestion"
-descript = "『我的數據庫中缺少關於此型號炸彈的關鍵資訊。但是，熱掃描顯示藍色引線的溫度略高於其他兩條。』"
-choices = [
+name = "AI 建議"
+description = "『我的數據庫中缺少關於此型號炸彈的關鍵資訊。但是，熱掃描顯示藍色引線的溫度略高於其他兩條。』"
+choice = [
   { text = "檢查炸彈", goto = "inspect_bomb" }
 ]
 
 [[story_nodes]]
 id = "inspect_bomb"
-descript = "你來到炸彈前，打開了面板。裡面有三條線：紅色、黃色和藍色。你必須做出選擇。"
+name = "檢查炸彈"
+description = "你來到炸彈前，打開了面板。裡面有三條線：紅色、黃色和藍色。你必須做出選擇。"
 # 劇情效果：增加玩家的焦慮值
 on_enter = { set_status = "anxiety", to = 70 }
-choices = [
+choice = [
   { text = "剪斷紅色引線", goto = "bomb_explodes" },
   { text = "剪斷黃色引線", goto = "bomb_explodes" },
   { text = "剪斷藍色引線", goto = "disarm_success" }
@@ -101,22 +108,24 @@ choices = [
 
 [[story_nodes]]
 id = "disarm_success"
-descript = "你用顫抖的手剪斷了藍色引線。倒數計時停止了。U-734 的聲音響起：『威脅已解除。做得好，探員。』"
+name = "拆彈成功"
+description = "你用顫抖的手剪斷了藍色引線。倒數計時停止了。U-734 的聲音響起：『威脅已解除。做得好，探員。』"
 # 劇情效果：更新全域變數和玩家狀態
 on_enter = [
     { set_variable = "bomb_disarmed", to = true },
     { set_status = "anxiety", to = 10 }
 ]
-choices = [
+choice = [
   { text = "（癱倒在地）" }
 ]
 
 [[story_nodes]]
 id = "bomb_explodes"
+name = "炸彈引爆"
 # 這個節點沒有描述，因為爆炸後遊戲就結束了
-hide_descript = "當玩家選擇錯誤或時間耗盡時，會跳轉到這裡。這是一個失敗結局。"
+hidden_description = "當玩家選擇錯誤或時間耗盡時，會跳轉到這裡。這是一個失敗結局。"
 # 劇情效果：將焦慮值設為最大
 on_enter = { set_status = "anxiety", to = 100 }
 # 遊戲結束標記，引擎看到後會結束遊戲
 game_over = true
-choices = []
+choice = []

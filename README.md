@@ -30,7 +30,7 @@ title = "Advanced Hybrid Model Example - Time Bomb"
 #------------------------------------------------------------------------------
 
 [world_setting]
-descript = "A world with a futuristic sci-fi feel."
+description = "A world with a futuristic sci-fi feel."
 
 [variables]
 # Tracks whether the bomb has been disarmed
@@ -41,7 +41,7 @@ bomb_disarmed = false
 #------------------------------------------------------------------------------
 
 [user_setting]
-name = "Agent"
+user_name = "Agent"
 # Player's status values
 status = [
   { name = "anxiety", value = 30, max = 100, min = 0 }
@@ -53,7 +53,7 @@ status = [
 [[characters]]
 id = "unit734"
 name = "U-734"
-descript = "A holographic AI assistant in the center of the room."
+description = "A holographic AI assistant in the center of the room."
 # Role-playing guide for the character
 personality = "Speaks in a monotone, logical, and robotic tone. Provides data but no emotional support. Repeats key instructions when the situation is critical."
 # Characters can also have their own statuses
@@ -68,14 +68,11 @@ status = [
 
 [[scenes]]
 id = "locked_room"
-descript = "A cold, metallic room with no doors or windows. A large screen on the wall displays an ominous red countdown."
+name = "Locked Room"
+description = "A cold, metallic room with no doors or windows. A large screen on the wall displays an ominous red countdown."
 # The scene's atmosphere can influence music, UI, or the LLM's tone
 atmosphere = "Urgent, Claustrophobic, Tense"
-
-# When entering this scene, the player has only 5 turns (actions)
-max_turn = 5
-# After time runs out, forcibly jump to the specified story node
-when_max_turn = "bomb_explodes"
+objs = {}
 
 # Story entry points
 story_triggers = [
@@ -89,35 +86,39 @@ story_triggers = [
 
 [[story_nodes]]
 id = "start_scenario"
-descript = "Your mind clears after a moment of dizziness. The voice of AI U-734 sounds: 'Agent, welcome back. Situation analysis: An active bomb has been detected. Immediate action is advised.'"
-choices = [
+name = "Scenario Start"
+description = "Your mind clears after a moment of dizziness. The voice of AI U-734 sounds: 'Agent, welcome back. Situation analysis: An active bomb has been detected. Immediate action is advised.'"
+choice = [
   { text = "'U-734, report the situation.'", goto = "ai_report" },
   { text = "'Rush to inspect the bomb directly.'", goto = "inspect_bomb" }
 ]
 
 [[story_nodes]]
 id = "ai_report"
-descript = "'The bomb will detonate when the countdown ends. Scans indicate that disarming requires cutting one of three wires. A wrong choice will lead to immediate detonation.'"
+name = "AI Report"
+description = "'The bomb will detonate when the countdown ends. Scans indicate that disarming requires cutting one of three wires. A wrong choice will lead to immediate detonation.'"
 # Hidden description visible only to the LLM, used to enrich content
-hide_descript = "The AI's hologram flickers for a moment, as if hinting at information not explicitly stated."
-choices = [
+hidden_description = "The AI's hologram flickers for a moment, as if hinting at information not explicitly stated."
+choice = [
   { text = "'Which three wires?'", goto = "inspect_bomb" },
   { text = "'What do you suggest?'", goto = "ai_suggestion" }
 ]
 
 [[story_nodes]]
 id = "ai_suggestion"
-descript = "'My database lacks critical information on this model of bomb. However, thermal scans show the blue wire's temperature is slightly higher than the other two.'"
-choices = [
+name = "AI Suggestion"
+description = "'My database lacks critical information on this model of bomb. However, thermal scans show the blue wire's temperature is slightly higher than the other two.'"
+choice = [
   { text = "'Inspect the bomb.'", goto = "inspect_bomb" }
 ]
 
 [[story_nodes]]
 id = "inspect_bomb"
-descript = "You approach the bomb and open its panel. Inside are three wires: red, yellow, and blue. You must make a choice."
+name = "Inspect Bomb"
+description = "You approach the bomb and open its panel. Inside are three wires: red, yellow, and blue. You must make a choice."
 # Story effect: Increase the player's anxiety
 on_enter = { set_status = "anxiety", to = 70 }
-choices = [
+choice = [
   { text = "'Cut the red wire.'", goto = "bomb_explodes" },
   { text = "'Cut the yellow wire.'", goto = "bomb_explodes" },
   { text = "'Cut the blue wire.'", goto = "disarm_success" }
@@ -125,25 +126,24 @@ choices = [
 
 [[story_nodes]]
 id = "disarm_success"
-descript = "With a trembling hand, you cut the blue wire. The countdown stops. U-734's voice sounds: 'Threat neutralized. Well done, Agent.'"
+name = "Disarm Success"
+description = "With a trembling hand, you cut the blue wire. The countdown stops. U-734's voice sounds: 'Threat neutralized. Well done, Agent.'"
 # Story effects: Update global variables and player status
-on_enter = [
-    { set_variable = "bomb_disarmed", to = true },
-    { set_status = "anxiety", to = 10 }
-]
-choices = [
+on_enter = { set_variable = "bomb_disarmed", to = true }
+choice = [
   { text = "'(Collapse on the floor)'" }
 ]
 
 [[story_nodes]]
 id = "bomb_explodes"
+name = "Bomb Explodes"
 # This node has no description because the game ends after the explosion
-hide_descript = "This is the failure ending, triggered when the player makes a wrong choice or runs out of time."
+hidden_description = "This is the failure ending, triggered when the player makes a wrong choice or runs out of time."
 # Story effect: Set anxiety to maximum
 on_enter = { set_status = "anxiety", to = 100 }
 # Game over flag; the engine will end the game upon seeing this
 game_over = true
-choices = []
+choice = []
 ```
 
 ## Roadmap
