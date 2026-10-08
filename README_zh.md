@@ -162,7 +162,8 @@ choice = []
     {"target": "user", "var": "anxiety", "type": "set", "value": 70}
   ],
   "next_choices": null
-}```
+}
+```
 
 ## 開發藍圖 (TODO)
 
